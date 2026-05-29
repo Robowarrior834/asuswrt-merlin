@@ -4520,11 +4520,41 @@ int asus_usb_interface(const char *device_name, const char *action)
 		}
 	}
 
+	// Apple iPhone/iPad: switch from default config (1) to a higher config
+	// that exposes the NCM or Apple vendor-specific tethering interface.
+	if(vid == 0x05ac){
+		char cfg_path[256];
+		char cfg_val[8] = "";
+		int cfg;
+
+		snprintf(cfg_path, sizeof(cfg_path),
+				"/sys/bus/usb/devices/%s/bConfigurationValue", usb_node);
+		if(f_read_string(cfg_path, cfg_val, sizeof(cfg_val)) > 0){
+			cfg = atoi(cfg_val);
+			if(cfg < 4){
+				int try_cfg;
+				for(try_cfg = 4; try_cfg > cfg; try_cfg--){
+					char val[2];
+					snprintf(val, sizeof(val), "%d", try_cfg);
+					if(f_write_string(cfg_path, val, FW_SILENT, 0) > 0){
+						usb_dbg("(%s): Apple device switched from config %d to config %d.\n",
+								device_name, cfg, try_cfg);
+						file_unlock(isLock);
+						return 0;
+					}
+				}
+				usb_dbg("(%s): Apple device - could not switch from config %d.\n",
+						device_name, cfg);
+			}
+		}
+	}
+
 	if(!isSerialInterface(device_name, 1, vid, pid)
 			&& !isACMInterface(device_name, 1, vid, pid)
 			&& !isRNDISInterface(device_name, vid, pid)
 			&& !isCDCETHInterface(device_name)
 			&& !isNCMInterface(device_name)
+			&& !isIPHETHInterface(device_name)
 #ifdef RTCONFIG_USB_BECEEM
 			&& !isGCTInterface(device_name)
 #endif
@@ -4668,6 +4698,7 @@ int asus_usb_interface(const char *device_name, const char *action)
 	}
 	else if(isIPHETHInterface(device_name)){
 		usb_dbg("(%s): Runing iPhone USB Ethernet...\n", device_name);
+		modprobe("ipheth");
 	}
 	else if(!strcmp(nvram_safe_get("stop_ui_insmod"), "1")){
 		usb_dbg("(%s): Don't insmod the serial modules.\n", device_name);

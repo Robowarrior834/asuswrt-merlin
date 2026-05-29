@@ -89,6 +89,8 @@ elif [ "$modem_enable" == "2" -a "$type" == "qmi" ]; then
 	type="tty"
 elif [ "$modem_vid" == "19d2" -a "$modem_pid" == "1589" ]; then # ZTE MF193A
 	type="tty"
+elif [ "$modem_vid" == "05ac" -a "$type" == "ncm" ]; then # Apple iPhone using NCM
+	type="iphone"
 fi
 echo "type=$type."
 
