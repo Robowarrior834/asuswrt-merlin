@@ -1093,6 +1093,34 @@ int isACMInterface(const char *interface_name, const int specifics, const unsign
 	return 1;
 }
 
+int isIPHETHInterface(const char *interface_name)
+{
+	char interface_class[4], interface_subclass[4];
+	char target_file[128];
+	DIR *module_dir;
+
+	if(get_usb_interface_class(interface_name, interface_class, 4) == NULL)
+		return 0;
+
+	if(strcmp(interface_class, "ff"))
+		return 0;
+
+	if(get_usb_interface_subclass(interface_name, interface_subclass, 4) == NULL)
+		return 0;
+
+	if(strcmp(interface_subclass, "fd"))
+		return 0;
+
+	memset(target_file, 0, 128);
+	sprintf(target_file, "%s/%s", SYS_IPHETH_PATH, interface_name);
+	if((module_dir = opendir(target_file)) == NULL)
+		return 0;
+
+	closedir(module_dir);
+
+	return 1;
+}
+
 int isRNDISInterface(const char *interface_name, const unsigned int vid, const unsigned int pid)
 {
 	char interface_class[4];

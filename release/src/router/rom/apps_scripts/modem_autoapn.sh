@@ -15,7 +15,7 @@ dataf="$apps_local_space/spn_asus.dat"
 modem_prefix="test_modem_"
 
 
-if [ "$modem_type" == "" -o  "$modem_type" == "ecm" -o "$modem_type" == "rndis" -o "$modem_type" == "asix" -o "$modem_type" == "ncm" ]; then
+if [ "$modem_type" == "" -o  "$modem_type" == "ecm" -o "$modem_type" == "rndis" -o "$modem_type" == "asix" -o "$modem_type" == "ncm" -o "$modem_type" == "iphone" ]; then
 	exit 0
 fi
 

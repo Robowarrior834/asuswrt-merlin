@@ -126,9 +126,13 @@ function initial(){
 			inputCtrl(document.form.modem_autoapn, 1);
 			change_apn_mode();
 		}
-		else{
+		else if(modem_android_orig == "1"){
 			hide_usb_settings(1);
 			document.getElementById("android_desc").style.display="";
+		}
+		else{
+			hide_usb_settings(1);
+			document.getElementById("iphone_desc").style.display="";
 		}
 	}
 	else{
@@ -154,8 +158,12 @@ function initial(){
 				inputCtrl(document.form.modem_authmode, 1);
 				change_apn_mode();
 			}
-			else{
+			else if(document.form.modem_android.value == "1"){
 				document.getElementById("android_desc").style.display="";
+				hide_usb_settings(1);
+			}
+			else{
+				document.getElementById("iphone_desc").style.display="";
 				hide_usb_settings(1);
 			}
 		},
@@ -619,9 +627,16 @@ function select_usb_device(obj){
 		reloadProfile();
 		change_apn_mode();
 		document.getElementById("android_desc").style.display="none";
+		document.getElementById("iphone_desc").style.display="none";
+	}
+	else if(obj.selectedIndex == 1){
+		document.getElementById("android_desc").style.display="";
+		document.getElementById("iphone_desc").style.display="none";
+		hide_usb_settings(1);
 	}
 	else{
-		document.getElementById("android_desc").style.display="";
+		document.getElementById("iphone_desc").style.display="";
+		document.getElementById("android_desc").style.display="none";
 		hide_usb_settings(1);
 	}
 
@@ -788,8 +803,9 @@ function change_apn_mode(){
 						<th><#select_usb_device#></th>
 						<td align="left">
 							<select id="modem_android" name="modem_android" class="input_option" onChange="select_usb_device(this);">
-								<option value="0" <% nvram_match("modem_android", "0", "selected"); %>><#menu5_4_4#></option>
+									<option value="0" <% nvram_match("modem_android", "0", "selected"); %>><#menu5_4_4#></option>
 								<option value="1" <% nvram_match("modem_android", "1", "selected"); %>><#Android_phone#></option>
+								<option value="2" <% nvram_match("modem_android", "2", "selected"); %>><#iPhone_phone#></option>
 							</select>
 							<div  class="formfontdesc" id="android_desc" style="display:none; color:#FFCC00;margin-top:5px;">
 								<#usb_tethering_hint0#>
@@ -797,6 +813,14 @@ function change_apn_mode(){
 								<li><#usb_tethering_hint1#></li>
 								<li><#usb_tethering_hint2#></li>
 								<li><#usb_tethering_hint3#></li>
+								</ol>
+							</div>
+							<div  class="formfontdesc" id="iphone_desc" style="display:none; color:#FFCC00;margin-top:5px;">
+								<#iPhone_tethering_hint0#>
+								<ol style="margin-top: 0px;">
+								<li><#iPhone_tethering_hint1#></li>
+								<li><#iPhone_tethering_hint2#></li>
+								<li><#iPhone_tethering_hint3#></li>
 								</ol>
 							</div>
 						</td>

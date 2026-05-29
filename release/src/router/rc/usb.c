@@ -388,6 +388,7 @@ void start_usb(void)
 		if(nvram_get_int("usb_qmi"))
 			modprobe("qmi_wwan");
 		modprobe("cdc_mbim");
+		modprobe("ipheth");
 #endif
 #endif
 	}
@@ -410,6 +411,7 @@ void remove_usb_modem_modules(void)
 	modprobe_r("rndis_host");
 	modprobe_r("cdc_ether");
 	modprobe_r("asix");
+	modprobe_r("ipheth");
 #endif
 	modprobe_r("usbnet");
 	modprobe_r("sr_mod");

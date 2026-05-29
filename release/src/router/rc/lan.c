@@ -2426,6 +2426,7 @@ NEITHER_WDS_OR_PSTA:
 			if(!strcmp(nvram_safe_get("success_start_service"), "0")
 					&& strcmp(modem_type, "rndis") // rndis modem can't get IP when booting.
 					&& strcmp(modem_type, "qmi") // qmi modem often be blocked when booting.
+					&& strcmp(modem_type, "iphone") // iphone needs settling time.
 					&& (unit == WAN_UNIT_FIRST || nvram_match("wans_mode", "lb"))
 					){
 				_dprintf("%s: start_wan_if(%d)!\n", __FUNCTION__, unit);

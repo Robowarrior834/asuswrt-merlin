@@ -41,6 +41,7 @@
 #define SYS_RNDIS_PATH "/sys/module/rndis_host/drivers/usb:rndis_host"
 #define SYS_CDCETH_PATH "/sys/module/cdc_ether/drivers/usb:cdc_ether"
 #define SYS_NCM_PATH "/sys/module/cdc_ncm/drivers/usb:cdc_ncm"
+#define SYS_IPHETH_PATH "/sys/module/ipheth/drivers/usb:ipheth"
 
 #include <rtstate.h>
 
@@ -111,6 +112,7 @@ extern int isACMInterface(const char *interface_name, const int specifics, const
 extern int isRNDISInterface(const char *interface_name, const unsigned int vid, const unsigned int pid);
 extern int isCDCETHInterface(const char *interface_name);
 extern int isNCMInterface(const char *interface_name);
+extern int isIPHETHInterface(const char *interface_name);
 #ifdef RTCONFIG_USB_BECEEM
 extern int isGCTInterface(const char *interface_name);
 extern int hadBeceemModule();

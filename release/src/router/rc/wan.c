@@ -1425,7 +1425,7 @@ _dprintf("start_wan_if: USB modem is scanning...\n");
 		if(nvram_get_int("stop_conn_3g") == 1){
 			write_3g_ppp_conf();
 		}
-		else if(strcmp(modem_type, "wimax")){
+		else if(strcmp(modem_type, "wimax") && strcmp(modem_type, "iphone")){
 			char *modem_argv[] = {"/usr/sbin/modem_enable.sh", NULL};
 			char *ptr;
 			int sim_state;

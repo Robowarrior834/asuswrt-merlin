@@ -105,6 +105,8 @@ int is_android_phone(const int mode, const unsigned int vid, const unsigned int 
 {
 	if(nvram_match("modem_android", "1"))
 		return 1;
+	else if(nvram_match("modem_android", "2"))
+		return 0; // iPhone mode: let detection chain continue to isIPHETHInterface
 	else if(mode){ // modem mode.
 		if(vid == 0x04e8 && pid == 0x6864) // Samsung S3
 			return 1;
@@ -4663,6 +4665,9 @@ int asus_usb_interface(const char *device_name, const char *action)
 	}
 	else if(isNCMInterface(device_name)){
 		usb_dbg("(%s): Runing cdc_ncm...\n", device_name);
+	}
+	else if(isIPHETHInterface(device_name)){
+		usb_dbg("(%s): Runing iPhone USB Ethernet...\n", device_name);
 	}
 	else if(!strcmp(nvram_safe_get("stop_ui_insmod"), "1")){
 		usb_dbg("(%s): Don't insmod the serial modules.\n", device_name);
